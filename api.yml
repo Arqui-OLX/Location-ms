@@ -1,0 +1,207 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Microservice for OLX location
+  description: Nodejs + MySQL
+  license:
+    name: Software Architecture 2019-II
+host: localhost:3000
+basePath: /locations
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /locations:
+    post:
+      summary: Creates a new location
+      operationId: createLocation
+      parameters:
+        - name: location
+          in: body
+          required: true
+          description: Location Object
+          schema:
+            $ref: '#/definitions/LocationInput'
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/Location'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+    get:
+      summary: Returns all locations
+      operationId: getAllLocations
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/LocationsList'
+        '406':
+          description: Not Acceptable (Invalid Params)
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+
+  /locations/{code}:
+    get:
+      summary: Returns a location with the given code
+      operationId: getLocationByCode
+      parameters:
+        - name: code
+          in: path
+          description: The code of the location to be returned
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/Location'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '406':
+          description: Not Acceptable (Invalid Params)
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+
+    put:
+      summary: Updates a location with the given code
+      operationId: updateCourse
+      parameters:
+        - name: code
+          in: path
+          description: The code of the location to be updated
+          required: true
+          type: integer
+        - name: location
+          in: body
+          required: true
+          description: Location Object
+          schema:
+            $ref: '#/definitions/LocationInput'
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/Location'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '406':
+          description: Not Acceptable (Invalid Params)
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+
+    delete:
+      summary: Deletes a location with the given code
+      operationId: deleteLocation
+      parameters:
+        - name: code
+          in: path
+          description: The code of the location to be deleted
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/LocationCode'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '406':
+          description: Not Acceptable (Invalid Params)
+          schema:
+            $ref: '#/definitions/ErrorModel'
+        '500':
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+
+definitions:
+
+  # Courses
+  
+  Location:
+    type: object
+    properties:
+      code:
+        type: integer
+      address:
+        type: string
+      city:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+  
+  LocationInput:
+    type: object
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+
+  LocationsList:
+    type: object
+    required:
+      - total
+      - list
+    properties:
+      total:
+        type: number
+      list:
+        type: array
+        items:
+          $ref: '#/definitions/Location'
+  
+  LocationCode:
+    type: object
+    properties:
+      code:
+        type: integer
+  
+# Errors
+  ErrorModel:
+    type: object
+    required:
+      - message
+      - code
+    properties:
+      message:
+        type: string
+      code:
+        type: number
+      description:
+        type: object
