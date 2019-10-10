@@ -40,8 +40,19 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var typeorm_1 = require("typeorm");
 var Location_1 = require("./entity/Location");
+var faker = require("faker");
+//using faker to populate the location table
 // create typeorm connection
 typeorm_1.createConnection().then(function (connection) {
+    for (var i = 0; i < 100; i++) {
+        var randomLocation = new Location_1.Location();
+        randomLocation.address = faker.address.streetAddress();
+        randomLocation.city = faker.address.city();
+        randomLocation.latitude = faker.address.latitude();
+        randomLocation.longitude = faker.address.longitude();
+        connection.manager.save(randomLocation);
+        console.log('Location has been saved' + '\n');
+    }
     var locationRepository = connection.getRepository(Location_1.Location);
     // create and setup express app
     var app = express();

@@ -3,9 +3,22 @@ import {Request, Response} from "express";
 import * as bodyParser from  "body-parser";
 import {createConnection} from "typeorm";
 import {Location} from "./entity/Location";
+import * as faker from "faker";
 
 // create typeorm connection
 createConnection().then(connection => {
+
+    //using faker to populate the location table
+    for(let i=0; i<100; i++){
+        let randomLocation = new Location();
+        randomLocation.address = faker.address.streetAddress();
+        randomLocation.city = faker.address.city();
+        randomLocation.latitude = faker.address.latitude();
+        randomLocation.longitude = faker.address.longitude();
+    
+        connection.manager.save(randomLocation);
+    }
+
     const locationRepository = connection.getRepository(Location);
 
     // create and setup express app
@@ -45,3 +58,4 @@ createConnection().then(connection => {
     // start express server
     app.listen(3000);
 });
+
