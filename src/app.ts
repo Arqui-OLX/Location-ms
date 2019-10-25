@@ -58,4 +58,3 @@ createConnection().then(connection => {
     // start express server
     app.listen(3000);
 });
-

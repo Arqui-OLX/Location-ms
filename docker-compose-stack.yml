@@ -1,9 +1,13 @@
 version: '2'
 services:
   location-ms:
-    image: cdtafurd/location-ms_location-ms:back2
+    image: cdtafurd/location-ms_location-ms:tag3
     ports:
     - 3000:3000/tcp
+    labels:
+      io.rancher.scheduler.affinity:host_label: "id=n2"
+    depends_on:
+    - location-db
   location-db:
     image: mysql:5.7
     environment:
@@ -13,3 +17,5 @@ services:
       MYSQL_USER: root
     ports:
     - 3306:3306/tcp
+    labels:
+      io.rancher.scheduler.affinity:host_label: "id=n2"

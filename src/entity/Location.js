@@ -26,11 +26,11 @@ var Location = /** @class */ (function () {
         __metadata("design:type", String)
     ], Location.prototype, "city", void 0);
     __decorate([
-        typeorm_1.Column(),
+        typeorm_1.Column({ type: "float" }),
         __metadata("design:type", Number)
     ], Location.prototype, "latitude", void 0);
     __decorate([
-        typeorm_1.Column(),
+        typeorm_1.Column({ type: "float" }),
         __metadata("design:type", Number)
     ], Location.prototype, "longitude", void 0);
     Location = __decorate([

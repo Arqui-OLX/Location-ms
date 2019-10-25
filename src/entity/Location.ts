@@ -12,10 +12,10 @@ export class Location {
     @Column()
     city: string;
 
-    @Column()
+    @Column({type: "float"})
     latitude: number;
 
-    @Column()
+    @Column({type: "float"})
     longitude: number;
 
 }
